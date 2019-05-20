@@ -1,0 +1,257 @@
+set $mod Mod4
+set $alt Mod1
+
+font pango:Hack Nerd Font 10
+set $up k
+set $down j
+set $left h
+set $right l
+
+set $term --no-startup-id $TERMINAL
+set $shutdown sudo -A shutdown -h now
+set $exe exec --no-startup-id exec
+
+# Define Workspaces
+set $workspace1 "1: Firefox "
+set $workspace2 "2: Terminals "
+set $workspace3 "3: Programming  ﭱ"
+set $workspace4 "4: Media 嗢"
+set $workspace5 "5: "
+set $workspace6 "6: "
+set $workspace7 "7: "
+set $workspace8 "8: Gaming "
+set $workspace9 "9: Gaming "
+set $workspace10 "10: Music "
+
+
+gaps inner 17
+gaps outer 11
+
+
+# switch to workspace
+bindsym $mod+1 workspace $workspace1
+bindsym $mod+2 workspace $workspace2
+bindsym $mod+3 workspace $workspace3
+bindsym $mod+4 workspace $workspace4
+bindsym $mod+5 workspace $workspace5
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
+bindsym $mod+9 workspace $workspace9
+bindsym $mod+0 workspace $workspace10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $workspace1
+bindsym $mod+Shift+2 move container to workspace $workspace2
+bindsym $mod+Shift+3 move container to workspace $workspace3
+bindsym $mod+Shift+4 move container to workspace $workspace4
+bindsym $mod+Shift+5 move container to workspace $workspace5
+bindsym $mod+Shift+6 move container to workspace $workspace6
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
+bindsym $mod+Shift+9 move container to workspace $workspace9
+bindsym $mod+Shift+0 move container to workspace $workspace10
+
+
+for_window [instance="dropdown_*"] floating enable
+for_window [instance="dropdown_*"] move scratchpad
+for_window [instance="dropdown_*"] sticky enable
+for_window [instance="dropdown_*"] scratchpad show
+for_window [instance="dropdown_tmuxdd"] resize set 625 450
+for_window [instance="dropdown_dropdowncalc"] resize set 800 300
+for_window [instance="dropdown_tmuxdd"] border pixel 2
+for_window [instance="dropdown_dropdowncalc"] border pixel 2
+for_window [instance="dropdown_*"] move position center
+
+
+for_window [instance="sun-awt-X11-XFramePeer"] floating enable
+for_window [instance="sun-awt-X11-XFramePeer"] border pixel 2
+
+
+hide_edge_borders smart
+smart_gaps on
+for_window [class="X-terminal-emulator"] border pixel 3
+
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q [con_id="__focused__" instance="^(?!dropdown_).*$"] kill
+bindsym $mod+q [con_id="__focused__" instance="^(?!dropdown_).*$"] kill
+
+# Firefox
+bindsym $mod+Shift+w exec --no-startup-id $BROWSER
+
+# Calculator
+bindsym $mod+a exec ddspawn dropdowncalc
+
+# TERM
+bindsym $mod+u exec ddspawn tmuxdd
+
+# Thunar / FILE
+bindsym $mod+e $exe thunar
+
+# Default gaps
+bindsym $mod+Shift+t gaps inner current set 17; gaps outer current set 11
+
+# HTOP
+bindsym $mod+i exec terminator -e htop
+
+# Disable Gaps
+bindsym $mod+Shift+d gaps inner current set 2; gaps outer current set 0
+
+# Increase-Decrease Gaps
+bindsym $mod+c        gaps inner current plus 4
+bindsym $mod+Shift+c  gaps inner current minus 4
+bindsym $mod+z        gaps outer current plus 4
+bindsym $mod+Shift+z  gaps outer current minus 4
+
+# Shutdown
+bindsym $mod+Shift+x $exe "$shutdown"
+
+# Some Workspace
+bindsym $mod+Home workspace $workspace1
+bindsym $mod+Shift+Home move container to workspace $workspace1
+bindsym $mod+End workspace $workspace10
+bindsym $mod+Shift+End move container to workspace $workspace10
+bindsym $mod+Tab workspace back_and_forth
+
+# Rofi
+bindsym $mod+d exec --no-startup-id rofi -hide-scrollbar -show drun -lines 8 -width 38 -fg "#f5f5f5" -bg "#323232" -hlfg "#ffffff" -hlbg "#325489"
+
+# change focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move the Window Around with `vim` keys
+bindsym $mod+Shift+h move left 25
+bindsym $mod+Shift+j move down 20
+bindsym $mod+Shift+k move up 20
+bindsym $mod+Shift+l move right 25
+
+bindsym $mod+m exec $term -e neomutt && pkill -RTMIN+12 i3blocks
+
+# split orientation
+bindsym $mod+b split h
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+w layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+##################################################################################
+for_window [class="^.*"] border pixel 2
+set $browser firefox
+
+bindsym $mod+Insert exec --no-startup-id showclip
+
+bindsym Print exec --no-startup-id maim ~/Pictures/Screenshots/"$(date '+%Y-%m-%d %H-%M-%S').png"
+bindsym $mod+Print exec --no-startup-id maim ~/Pictures/Screenshots/"$(date '+%Y-%m-%d %H-%M-%S').png"
+bindsym Shift+Print exec --no-startup-id maimpick
+##################################################################################
+
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# bindsym $mod+Shift+r reload; restart
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+
+mode "resize" {
+        bindsym $left       resize shrink width 12 px or 12 ppt
+        bindsym $down       resize grow height 12 px or 12 ppt
+        bindsym $up         resize shrink height 12 px or 12 ppt
+        bindsym $right      resize grow width 12 px or 12 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left        resize shrink width 12 px or 12 ppt
+        bindsym Down        resize grow height 12 px or 12 ppt
+        bindsym Up          resize shrink height 12 px or 12 ppt
+		bindsym Right	    resize grow width 12 px or 12 ppt
+
+		bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+y  exec i3resize left
+bindsym $mod+Shift+u  exec i3resize down
+bindsym $mod+Shift+i  exec i3resize up
+bindsym $mod+Shift+o  exec i3resize right
+
+focus_follows_mouse no
+
+bindsym $mod+r mode "resize"
+
+bar {
+		font pango:Hack Nerd Font 11
+        status_command i3blocks
+        mode dock
+		position top
+}
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 9
+bindsym XF86MonBrightnessDown exec xbacklight -dec 9
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+assign [class="Firefox"] $workspace1
+assign [class="Spotify"] $workspace10
+assign [class="vlc"] $workspace4
+assign [class="Processing"] $workspace3
+assign [class="Code"] $workspace3
+assign [class="Atom"] $workspace3
+assign [class="jetbrains-pycharm-ce"] $workspace3
+
+for_window [class="Firefox"] move workspace $workspace1
+for_window [class="Spotify"] move workspace $workspace10
+for_window [class="vlc"] move workspace $workspace4
+for_window [class="Processing"] move workspace $workspace3
+for_window [class="Code"] move workspace $workspace3
+for_window [class="Atom"] move workspace $workspace3
+for_window [class="jetbrains-pycharm-ce"] move workspace $workspace3
+
+exec --no-startup-id compton -bf
+exec --no-startup-id dunst
+exec_always --no-startup-id libinput-gestures
+exec_always --no-startup-id unity-settings-daemon
+exec_always --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop "DELL0767:00 06CB:7E92 Touchpad" "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop "DELL0767:00 06CB:7E92 Touchpad" "libinput Disable While Typing Enabled" 0
+exec_always --no-startup-id feh --bg-scale /home/beronthecolossus/Pictures/Wallpaper/background.jpg

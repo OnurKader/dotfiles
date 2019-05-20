@@ -1,0 +1,9 @@
+#!/env/bin/bash
+
+tmux has-session -t terminator
+if [$? != 0]
+then
+	tmux new-session -s terminator
+fi
+tmux attach -t terminator
+

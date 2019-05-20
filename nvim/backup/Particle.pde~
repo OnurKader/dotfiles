@@ -1,0 +1,101 @@
+class Particle {
+  PVector pos, vel, acc;
+  final int radius = 11;
+  boolean moving = false;
+  final int maxVel = 10;
+  int neighbor_count = 0;
+
+  Particle(){
+    pos = new PVector(random(width), random(height));
+    vel = PVector.random2D();
+    acc = new PVector();
+  }
+
+  Particle(PVector pos){
+    this.pos = pos.copy();
+    vel = new PVector();
+    acc = new PVector();
+  }
+
+  Particle(float x, float y){
+    pos = new PVector(x, y);
+    vel = new PVector();
+    acc = new PVector();
+  }
+
+  void applyForce(PVector force){
+    acc.add(force);
+    moving = true;
+  }
+
+  void update(){
+    vel.add(acc);
+    vel.limit(maxVel);
+    pos.add(vel);
+    acc.setMag(0);
+    vel.mult(0.9983f);
+    edges();
+
+    if(vel.mag() < 0.12){
+      moving = false;
+      vel.mult(0);
+    }
+
+    countNeighbor();
+
+    if(neighbor_count > 5){
+      this.pos.set(-32, -32);
+    }
+
+  }
+
+  void show(){
+    fill(152, 249, 136, 128);
+    strokeWeight(1);
+    stroke(55, 120);
+    circle(pos.x, pos.y, radius);
+  }
+
+  void repulse(Particle other){
+    PVector dist = PVector.sub(this.pos, other.pos);
+    if(dist.mag() < 29 && dist.mag() > radius + 3){
+      dist.normalize().mult((this.vel.mag() + other.vel.mag())*0.06 + 0.01);
+      this.applyForce(dist);
+      this.vel.mult(0.999);
+    }
+  }
+
+  void attract(Particle other){
+    PVector dist = PVector.sub(other.pos, this.pos);
+    if(dist.mag() < 36 && dist.mag() > radius + 3){
+      dist.normalize().mult((this.vel.mag() + other.vel.mag())*0.044 + 0.01);
+      this.applyForce(dist.mult(neighbor_count*0.05));
+      this.vel.mult(0.999);
+    } else if(dist.mag() < 8){
+        dist.normalize().mult((this.vel.mag() + other.vel.mag())*-0.044 - 0.01);
+        this.applyForce(dist.mult(neighbor_count*0.05));
+        this.vel.mult(0.999);
+    }
+  }
+
+  void countNeighbor(){
+    for(Particle part: particles){
+      PVector dist = PVector.sub(part.pos, this.pos);
+      if(dist.mag() < 52 && this != part){
+        this.neighbor_count++;
+      }
+    }
+  }
+
+  void edges(){
+    if(pos.x < radius || pos.x > width - radius){
+      vel.x *= -1;
+      pos.x += vel.x * 1.11f;
+    }
+    if(pos.y < radius || pos.y > height - radius){
+      vel.y *= -1;
+      pos.y += vel.y * 1.11f;
+    }
+  }
+
+}
