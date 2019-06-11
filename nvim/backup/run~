@@ -1,0 +1,1 @@
+clear && g++ ./*.cpp */*.cpp -o ../build/Main -O3 -std=c++14 -Wall -Wextra -Wfloat-equal -lsfml-window -lsfml-graphics -lsfml-system && ../build/Main

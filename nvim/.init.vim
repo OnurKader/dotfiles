@@ -33,20 +33,17 @@ set splitbelow
 set splitright
 set t_Co=256
 set tabstop=4
+set termguicolors
 set visualbell
 set wildmenu
 set wildmode=list:longest,full
 set wrap
 syntax on
+" Plugins
 call plug#begin('~/.local/share/nvim/plugged')
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
 Plug 'PotatoesMaster/i3-vim-syntax'
+Plug 'Shougo/denite.nvim'
+Plug 'Valloric/YouCompleteMe'
 Plug 'christoomey/vim-sort-motion'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'edkolev/tmuxline.vim'
@@ -54,12 +51,19 @@ Plug 'elzr/vim-json'
 Plug 'gko/vim-coloresque'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 Plug 'mileszs/ack.vim'
 Plug 'neomake/neomake'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'rking/ag.vim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'rust-lang/rust.vim'
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree'
 Plug 'sjl/badwolf'
+Plug 'sophacles/vim-processing'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
@@ -67,8 +71,6 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-Plug 'sophacles/vim-processing'
-Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " Color Scheme
 " Make the gutters darker than the background.
@@ -95,21 +97,14 @@ au BufWinLeave ?* mkview
 au BufWinEnter ?* silent loadview
 
 autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
-
 " Clipboard & Statusline
 set clipboard=unnamedplus
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 au BufNewFile,BufRead *.py set textwidth=80
-nmap <silent> <buffer> gK <Plug>(kite-docs)
 autocmd FileType python set colorcolumn=80
-
-" Enable deoplete when InsertEnter.
-let g:deoplete#enable_at_startup = 0
-autocmd InsertEnter * call deoplete#enable()
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
 " Some Movement Stuff
 nnoremap j gj
 nnoremap k gk
@@ -119,16 +114,15 @@ xnoremap <C-j> <C-w>j
 xnoremap <C-k> <C-w>k
 xnoremap <C-l> <C-w>l
 inoremap jk <esc>
+inoremap jj <Esc>
 " Remove Arrow Key Functionality in Normal Mode
 nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
-
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
-
 " CTRL-P
 nnoremap <leader>a :Ag
 let g:ctrlp_map = '<c-p>'
@@ -138,20 +132,18 @@ let g:ctrlp_switch_buffer = 'et'
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-
 call neomake#configure#automake('rw', 1000)
-let g:kite_tab_complete=1
-" set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-set laststatus=2  " always display the status line
-
 map <C-o> :NERDTreeToggle<CR>
+" Compile Stuff
+" Regular C/C++
 nnoremap <F5> :w <CR> :!g++ -o %< % && ./%< <CR>
-map <leader>o :setlocal spell! spelllang=en_us<CR>
-
+" olcPixelGameEngine
+nnoremap <F6> :w <CR> :!g++ % -o %< -lX11 -lGL -lpthread -lpng && vblank_mode=0 ./%< <CR>
+" SFML
+nnoremap <F7> :w <CR> :!g++ % -o %< -lsfml-graphics -lsfml-window -lsfml-system && ./%< <CR>
 " CTRL-C to toggle highlight.
 let hlstate=0
 nnoremap <C-c> :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1 <esc> <CR>
-
 autocmd BufRead,BufNewFile /home/beronthecolossus/.config/i3/* set filetype=i3
 " Remove Whitespace
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
@@ -169,5 +161,16 @@ inoremap <leader>q <ESC>:q<CR>
 nnoremap <leader>q :q<CR>
 inoremap <leader>x <ESC>:x<CR>
 nnoremap <leader>x :x<CR>
-nnoremap <Return> o<Esc>
 nnoremap <Enter> o<Esc>
+:noremap <leader>v :vsp<cr>
+:noremap <leader>h :split<cr>
+:noremap <leader>c :wincmd w<cr>
+" YouCompleteMe Stuff
+let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
+let g:ycm_auto_trigger = 1
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_complete_in_strings = 0
+let g:ycm_log_level = 'warning'
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+

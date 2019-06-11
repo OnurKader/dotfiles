@@ -1,0 +1,4 @@
+#!/bin/bash
+Name=$(echo $1 | cut -d"." -f1)
+gcc "$1" -o "$Name" -O3 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio && ./"$Name"
+

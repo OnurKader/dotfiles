@@ -1,0 +1,30 @@
+﻿exec settings
+exec gfx
+sv_allow_point_servercommand always
+exec scoreboard
+fps_max "0"
+cl_autorezoom 0
+zoom_sensitivity_ratio 0.891
+mat_phong 0
+
+alias "sixes" "tf_bot_add 11; tf_bot_difficulty 3; wait 36; clear"
+alias "drop" "cl_trigger_first_notification";
+alias "inventory" "open_charinfo_backpack";
+setinfo inventory "";
+setinfo drop "";
+
+tf_dingaling_pitchmindmg 140
+tf_dingaling_pitchmaxdmg 5
+
+sv_pure "0"
+voice_enable 0
+map_background preload_room; wait 33; disconnect
+echo "============================================================================"
+echo "                                Peki...			                     	  "
+echo "============================================================================"
+wait 1000; exec disable_ragdolls_gibs; clear
+hud_saytext_time 10
+cl_burninggibs 0
+cl_show_splashes 0
+//-novid -high -noipx -threads 2 -nod3d9ex -nojoy -noborder -w 1920 -h 1080 -noforcemaccel -noforcemparms -noforcemspd -heapsize 4193413 -console
+//-novid -high -nod3d9ex -nojoy -noforcemaccel -noforcemparms -noforcemspd -console -nosteamcontroller -softparticlesdefaultoff -reuse -nohltv -limitvsconst -NoQueuedPacketThread -gl_enablesamplerobjects -gl_disable_arb_buffer_storage +net_queued_packet_thread 0 -dxlevel 92 -nostartupsound -freq 60

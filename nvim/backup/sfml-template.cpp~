@@ -1,0 +1,44 @@
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
+
+inline float getFPS(const sf::Time &time) { return 1000000.0f / time.asMicroseconds(); }
+
+void gameLoop(){
+	sf::ContextSettings settings; settings.antialiasingLevel = 4;
+	sf::RenderWindow window(sf::VideoMode(<++>, <++>), "<++>", sf::Style::Close | sf::Style::Titlebar, settings);
+	/* window.setVerticalSyncEnabled(true); */
+	window.setPosition({(1920 - <++>)/2, (1080 - <++>)/2});
+
+	sf::Font roboto;
+	sf::Text FPS;
+
+	if(!roboto.loadFromFile("/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Regular.ttf")) std::cout << "Error while loading font from file\n";
+
+	FPS.setFont(roboto);
+	FPS.setCharacterSize(14);
+	FPS.setFillColor(sf::Color::Cyan);
+
+	sf::Clock fps_clock;
+
+	while(window.isOpen())
+	{
+		sf::Event event;
+		while(window.pollEvent(event))
+		{
+			switch(event.type){
+				case (sf::Event::Closed): window.close(); break;
+				case <++> : break;
+			}
+		}
+		window.clear();
+		window.display();
+	}
+}
+
+int main(){
+
+	gameLoop();
+	return 0;
+}
+

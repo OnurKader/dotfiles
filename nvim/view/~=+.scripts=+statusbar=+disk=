@@ -2,33 +2,35 @@ let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
-inoremap <buffer> <silent> <M-(> =AutoPairsMoveCharacter('(')
-inoremap <buffer> <silent> <M-)> =AutoPairsMoveCharacter(')')
-inoremap <buffer> <silent> <M-[> =AutoPairsMoveCharacter('[')
-inoremap <buffer> <silent> <M-]> =AutoPairsMoveCharacter(']')
-inoremap <buffer> <silent> <M-{> =AutoPairsMoveCharacter('{')
-inoremap <buffer> <silent> <M-}> =AutoPairsMoveCharacter('}')
-inoremap <buffer> <silent> <M-"> =AutoPairsMoveCharacter('"')
-inoremap <buffer> <silent> <M-'> =AutoPairsMoveCharacter('''')
-inoremap <buffer> <silent> <BS> =AutoPairsDelete()
-inoremap <buffer> <silent> <M-e> =AutoPairsFastWrap()
-inoremap <buffer> <silent> <M-b> =AutoPairsBackInsert()
-inoremap <buffer> <silent> <expr> <M-p> AutoPairsToggle()
-inoremap <buffer> <silent> <M-n> :call AutoPairsJump()a
-nmap <buffer> <silent> gK <Plug>(kite-docs)
-noremap <buffer> <silent> <M-p> :call AutoPairsToggle()
-noremap <buffer> <silent> <M-n> :call AutoPairsJump()
-inoremap <buffer> <silent>  =AutoPairsDelete()
-inoremap <buffer> <silent>   =AutoPairsSpace()
-inoremap <buffer> <silent> " =AutoPairsInsert('"')
-inoremap <buffer> <silent> ' =AutoPairsInsert('''')
-inoremap <buffer> <silent> ( =AutoPairsInsert('(')
-inoremap <buffer> <silent> ) =AutoPairsInsert(')')
-inoremap <buffer> <silent> [ =AutoPairsInsert('[')
-inoremap <buffer> <silent> ] =AutoPairsInsert(']')
-inoremap <buffer> <silent> ` =AutoPairsInsert('`')
-inoremap <buffer> <silent> { =AutoPairsInsert('{')
-inoremap <buffer> <silent> } =AutoPairsInsert('}')
+imap <buffer> <BS> <Plug>(PearTreeBackspace)
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeJNR) pear_tree#insert_mode#JumpNReturn()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeJump) pear_tree#insert_mode#JumpOut()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeExpandOne) pear_tree#insert_mode#ExpandOne()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeFinishExpansion) pear_tree#insert_mode#Expand()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeExpand) pear_tree#insert_mode#PrepareExpansion()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeBackspace) pear_tree#insert_mode#Backspace()
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeCloser_}) pear_tree#insert_mode#HandleCloser('}')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_{) pear_tree#insert_mode#TerminateOpener('{')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeCloser_)) pear_tree#insert_mode#HandleCloser(')')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_() pear_tree#insert_mode#TerminateOpener('(')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_') pear_tree#insert_mode#TerminateOpener('''')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_*) pear_tree#insert_mode#TerminateOpener('*')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeCloser_]) pear_tree#insert_mode#HandleCloser(']')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_[) pear_tree#insert_mode#TerminateOpener('[')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_") pear_tree#insert_mode#TerminateOpener('"')
+inoremap <buffer> <silent> <expr> <Plug>(PearTreeOpener_`) pear_tree#insert_mode#TerminateOpener('`')
+imap <buffer>  <Plug>(PearTreeExpand)
+imap <buffer>  <Plug>(PearTreeFinishExpansion)
+imap <buffer> " <Plug>(PearTreeOpener_")
+imap <buffer> ' <Plug>(PearTreeOpener_')
+imap <buffer> ( <Plug>(PearTreeOpener_()
+imap <buffer> ) <Plug>(PearTreeCloser_))
+imap <buffer> * <Plug>(PearTreeOpener_*)
+imap <buffer> [ <Plug>(PearTreeOpener_[)
+imap <buffer> ] <Plug>(PearTreeCloser_])
+imap <buffer> ` <Plug>(PearTreeOpener_`)
+imap <buffer> { <Plug>(PearTreeOpener_{)
+imap <buffer> } <Plug>(PearTreeCloser_})
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
@@ -51,7 +53,7 @@ setlocal commentstring=#%s
 setlocal complete=.,w,b,u,t
 setlocal concealcursor=
 setlocal conceallevel=0
-setlocal completefunc=
+setlocal completefunc=youcompleteme#CompleteFunc
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -146,7 +148,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 18
-normal! 065|
+normal! 016|
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :
