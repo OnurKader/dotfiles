@@ -1,4 +1,0 @@
-#!/bin/bash
-NAME=$(echo $1 | cut -d'.' -f1)
-g++ "$1" -o "$NAME" `pkg-config --cflags --libs opencv`
-

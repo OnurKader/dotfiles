@@ -1,9 +1,0 @@
-#!/bin/bash
-
-mahDate(){
-	date
-	return
-}
-
-mahDate
-

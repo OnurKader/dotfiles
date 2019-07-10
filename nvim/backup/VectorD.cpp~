@@ -1,9 +1,0 @@
-#include "Vector.h"
-
-class VectorD : public Vector<double>{
-	public:
-		VectorD(){
-			Vector<double>();
-		}
-
-};

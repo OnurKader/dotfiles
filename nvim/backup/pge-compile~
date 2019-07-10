@@ -1,4 +1,0 @@
-#!/bin/bash
-Name=$(echo $1 | cut -d'.' -f1)
-g++ "$1" -o "$Name" -lX11 -lGL -lpthread -lpng && vblank_mode=0 ./"$Name"
-

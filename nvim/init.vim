@@ -50,11 +50,13 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'gko/vim-coloresque'
+Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app & yarn install'}
 Plug 'junegunn/goyo.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 Plug 'mileszs/ack.vim'
 Plug 'neomake/neomake'
+Plug 'plasticboy/vim-markdown'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'rking/ag.vim'
 Plug 'roxma/nvim-yarp'
@@ -108,6 +110,8 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Some Movement Stuff
 nnoremap j gj
 nnoremap k gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
 " Moving to Windows (Split)
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -115,11 +119,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 inoremap jk <esc>
 inoremap jj <Esc>
-" Remove Arrow Key Functionality in Normal Mode
-" nnoremap <Left> <nop>
-" nnoremap <Right> <nop>
-" nnoremap <Up> <nop>
-" nnoremap <Down> <nop>
+" gj gk Arrow Key Functionality in Normal Mode
+nnoremap <Up> gk
+nnoremap <Down> gj
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
@@ -176,6 +178,7 @@ inoremap <leader>x <ESC>:x<CR>
 inoremap <leader>pragma <Esc>ggI#ifndef<Space><++><CR>#define<Space><++><CR><Esc>GA<CR>#endif<CR><Esc>
 map <leader><leader> <Esc>/<++><Enter>"_c4l
 nnoremap <Enter> o<Esc>
+nnoremap <S-Enter> O<Esc>
 nnoremap <leader>j :m+<cr>==
 nnoremap <leader>k :m-2<cr>==
 nnoremap <leader>q :q<CR>
@@ -187,9 +190,9 @@ vnoremap <leader>sys yOSystem.out.println(<esc>pA);
 " YouCompleteMe Stuff
 let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
 let g:ycm_auto_trigger = 1
-let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 0
 let g:ycm_complete_in_strings = 0
 let g:ycm_log_level = 'warning'
 let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 
