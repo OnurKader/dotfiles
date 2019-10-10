@@ -31,8 +31,8 @@ fi
       local vi_insert='>'
       local vi_cmd='<'
       local lock='X'
-      local incoming='<'
-      local outgoing='>'
+      local incoming='v'
+      local outgoing='^'
       local root='#'
       local jobs='%%'
       ;;
@@ -40,11 +40,11 @@ fi
 
 # START HERE!
 
-  typeset -ga POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-   os_icon dir_writable dir vcs)
+typeset -ga POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+os_icon dir_writable dir vcs)
 
-  typeset -ga POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-      virtualenv root_indicator status command_execution_time background_jobs custom_rprompt time)
+typeset -ga POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+virtualenv root_indicator status command_execution_time background_jobs custom_rprompt time)
 
   if (( ${PURE_POWER_USE_P10K_EXTENSIONS:-1} )); then
     local p="\${\${\${KEYMAP:-0}:#vicmd}:+${${vi_insert//\\/\\\\}//\}/\\\}}}"
@@ -70,7 +70,7 @@ fi
   typeset -g POWERLEVEL9K_DIR_{ETC,DEFAULT}_FOREGROUND=209
   typeset -g POWERLEVEL9K_DIR_{HOME,HOME_SUBFOLDER}_FOREGROUND=039
   typeset -g POWERLEVEL9K_ETC_ICON=
-  typeset -g POWERLEVEL9K_HOME_ICON=$'\uf015'
+  typeset -g POWERLEVEL9K_HOME_ICON="\uf015"
   typeset -g POWERLEVEL9K_FOLDER_ICON="\uf07b"
   typeset -g POWERLEVEL9K_HOME_SUB_ICON="\uf07c"
 
